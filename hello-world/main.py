@@ -2,9 +2,9 @@
 
 import tensorflow as tf
 from tensorflow import keras
+import matplotlib.pyplot as plt
 
-# Load the mnist data set. This data set which consists of 60,000+ grayscale images of handwritten digits for training
-# and 10,000 images for testing. TensorFlow provides easy access to this dataset.
+# Load the mnist data set.
 (x_train, y_train), (x_test, y_test) = keras.datasets.mnist.load_data()
 
 x_train = x_train / 255.0
