@@ -20,7 +20,14 @@
         plt.title('Label: ' + str(y_train[index_to_display]))
         plt.show()
         ```
-2. 
+2. We rescale the intensity level(think brightness) of the images
+   ```python
+    x_train = x_train / 255.0
+    x_test = x_test / 255.0
+    ```
+   * The reason this is necessary is to make it easier for the model to determine if a pixel is closer to black(`0`) or white(`255`)
+   * Having a smaller scale (from 0..1 instead of 0..255) also makes it easier for the model to learn and make predictions
+3. d
 
 This data set which consists of 60,000+ grayscale images of handwritten digits for training
  and 10,000 images for testing.

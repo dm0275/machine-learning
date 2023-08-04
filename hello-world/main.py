@@ -7,6 +7,8 @@ import matplotlib.pyplot as plt
 # Load the mnist data set.
 (x_train, y_train), (x_test, y_test) = keras.datasets.mnist.load_data()
 
+# Rescale the intensity level(brightness) of each image so that they fall with in the range of 0 or 1
+# 0 is a completely black pixel and 1 is a completely white pixel
 x_train = x_train / 255.0
 x_test = x_test / 255.0
 
