@@ -1,32 +1,17 @@
 #!/usr/bin/env python
 
 import tensorflow as tf
+import numpy as np
 from tensorflow import keras
-import matplotlib.pyplot as plt
 
-# Load the mnist data set.
-(x_train, y_train), (x_test, y_test) = keras.datasets.mnist.load_data()
+# Define input (x) and output (y) data
+input_x = np.array([-1.0, 0.0, 1.0, 2.0, 3.0, 4.0], dtype=float)
+output_y = np.array([-2.0, 1.0, 4.0, 7.0, 10.0, 13.0], dtype=float)
 
-# Rescale the intensity level(brightness) of each image so that they fall with in the range of 0 or 1.
-# We're normalizing the image and making it easier for the model to learn and make predictions
-# 0 is a completely black pixel and 1 is a completely white pixel
-x_train = x_train / 255.0
-x_test = x_test / 255.0
+# Build a sequential model
+model = tf.keras.Sequential([keras.layers.Dense(units=1, input_shape=[1])])
+model.compile(optimizer='sgd', loss='mean_squared_error')
 
-model = keras.Sequential([
-    keras.layers.Flatten(input_shape=(28, 28)),
-    keras.layers.Dense(128, activation='relu'),
-    keras.layers.Dense(10, activation='softmax')
-])
+model.fit(input_x, output_y, epochs=50)
 
-model.compile(optimizer='adam',
-              loss='sparse_categorical_crossentropy',
-              metrics=['accuracy'])
-
-model.fit(x_train, y_train, epochs=5)
-
-test_loss, test_acc = model.evaluate(x_test, y_test)
-print('Test accuracy:', test_acc)
-
-predictions = model.predict(x_test)
-print('Prediction: ', predictions)
+print(model.predict([10.0]))
