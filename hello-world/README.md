@@ -30,7 +30,22 @@
    * When we say "compiling the model," this is not referring to the compiling code process in programming. Instead, we're configuring the training settings and preparing the model for the training process.
    * `optimizer='sgd'`: This parameter specifies the optimization algorithm to be used during training. `sgd` stands for Stochastic Gradient Descent, which is a widely used optimization algorithm for training neural networks. Optimization algorithms update the model's parameters (weights) during training to minimize the loss function.
    * `loss='mean_squared_error`: This parameter specifies the loss function that the model will use to measure how well it's performing during training. `mean_squared_error` is a common loss function for regression problems. It computes the average squared difference between the predicted values and the actual target values. The goal of training is to minimize this loss, effectively making the model's predictions as close as possible to the actual targets.
-4. TODO
+4. Train the model
+   * ```python
+     model.fit(input_x, output_y, epochs=50)
+     ```
+   * This step is used to train the compiled model using input data (`input_x`) and corresponding target or output data (`output_y`) over a specified number of `epochs`.
+   * `input_x`: This parameter represents the input data used to train the model.
+   * `output_y`: This parameter represents the corresponding target or output data that you want your model to learn to predict. The model will try to adjust its parameters (weights) during training to minimize the difference between its predictions and the actual target values.
+   * `epochs=50`: This parameter specifies the number of times the entire dataset will be passed through the model during training. Each pass through the dataset is referred to as an epoch. Training for multiple epochs allows the model to learn from the data in multiple iterations.
+   * Training steps:
+     1. The input data `input_x` is fed into the model.
+     2. The model makes predictions based on the input data.
+     3. The predictions are compared to the corresponding target values in `output_y`.
+     4. The difference between the predictions and the actual targets is quantified using the loss function.
+     5. The optimizer adjusts the model's weights in an attempt to minimize the loss function.
+     6. The model's weights are updated iteratively for the specified number of epochs.
+5. d
 
 ## Notes:
 * Layer - A layer is a fundamental building block that processes and transforms data as it flows through the network. Think of a neural network as a stack of layers, each responsible for extracting and learning specific features from the input data.

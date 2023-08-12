@@ -7,3 +7,6 @@ venv
 
 # Ignore Gradle build output directory
 build
+
+*.h5
+*.keras
