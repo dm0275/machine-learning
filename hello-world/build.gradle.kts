@@ -1,4 +1,6 @@
-
+/**
+ * Hello World ML Tasks
+ */
 
 tasks.register("trainModel") {
     doLast {
@@ -8,10 +10,10 @@ tasks.register("trainModel") {
     }
 }
 
-tasks.register("loadModel") {
+tasks.register("runModel") {
     doLast {
         exec {
-            commandLine("python", "load.py")
+            commandLine("python", "predict.py")
         }
     }
 }

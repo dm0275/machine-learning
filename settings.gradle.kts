@@ -10,3 +10,4 @@
 rootProject.name = "machine-learning"
 
 include("hello-world")
+include("image-test")
