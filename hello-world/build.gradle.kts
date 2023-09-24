@@ -10,10 +10,18 @@ tasks.register("trainModel") {
     }
 }
 
-tasks.register("runModel") {
+tasks.register("testModel") {
     doLast {
         exec {
             commandLine("python", "predict.py")
+        }
+    }
+}
+
+tasks.register("trainModelNoDeps") {
+    doLast {
+        exec {
+            commandLine("python", "train_nodeps.py")
         }
     }
 }
