@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-
 import numpy as np
 
 # Define input (x) and output (y) data
@@ -23,13 +21,14 @@ for epoch in range(epochs):
     mse = np.mean((predicted_y - output_y) ** 2)
     print(f"Epoch {epoch + 1}/{epochs}, MSE: {mse}")
 
-    # Backpropagation: Compute gradients
+    # Compute gradients
     gradient_weight = np.mean(2 * (predicted_y - output_y) * input_x)
     gradient_bias = np.mean(2 * (predicted_y - output_y))
 
-    # Update model parameters using gradients
+    # Update model parameters using gradients and learning rate
     weight -= learning_rate * gradient_weight
     bias -= learning_rate * gradient_bias
+
 
 # Print the final trained parameters
 print(f"Trained weight: {weight}")
