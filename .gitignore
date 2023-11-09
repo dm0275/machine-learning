@@ -10,3 +10,4 @@ build
 
 *.h5
 *.keras
+datasets

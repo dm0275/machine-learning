@@ -26,3 +26,14 @@
     * `learning_rate`: The step size used during optimization to update model parameters. 
       * It controls the size of parameter updates during training.
     * `epochs`: The number of times the entire training dataset is passed forward and backward through the neural network during training.
+4. Start the training and loop through the training steps based on the number of `epochs` defined above
+5. Compute the predicted Y using a forward pass
+   * ```python
+     predicted_y = weight * input_x + bias
+     ```
+   * `weight`: This represents the weight parameter of the linear regression model. 
+     * The `weight` is a scalar value that determines the strength of the linear relationship between the input `input_x` and the output `predicted_y`.
+     * A scalar value is just a single number (ex. 5 or -2) It's a number without any direction, just a size.
+     * The `weight` says how much the input numbers influence the predictions. A big scalar means they influence a lot, a small scalar means they influence just a little.
+   * input_x: This is the input data, a NumPy array containing a set of input values. Each element of input_x corresponds to one data point.
+6. d
