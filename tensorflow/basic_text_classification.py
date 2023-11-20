@@ -120,3 +120,99 @@ vectorize_layer = layers.TextVectorization(
     # `output_sequence_length` values, resulting in a tensor of shape `(batch_size, output_sequence_length)` regardless
     # of how many tokens resulted from the splitting step. Defaults to `None`.
     output_sequence_length=sequence_length)
+
+# Make a text-only dataset (without labels), then call adapt
+train_text = raw_train_ds.map(lambda x, y: x)
+
+# adapt is used to fit the state of the preprocessing layer to the dataset. This will cause the model to build an
+# index of strings to integers.
+vectorize_layer.adapt(train_text)
+
+
+def vectorize_text(text, label):
+    text = tf.expand_dims(text, -1)
+    return vectorize_layer(text), label
+
+
+# retrieve a batch (of 32 reviews and labels) from the dataset
+text_batch, label_batch = next(iter(raw_train_ds))
+first_review, first_label = text_batch[0], label_batch[0]
+print("Review", first_review)
+print("Label", raw_train_ds.class_names[first_label])
+print("Vectorized review", vectorize_text(first_review, first_label))
+
+print("1287 ---> ",vectorize_layer.get_vocabulary()[1287])
+print(" 313 ---> ",vectorize_layer.get_vocabulary()[313])
+print('Vocabulary size: {}'.format(len(vectorize_layer.get_vocabulary())))
+
+train_ds = raw_train_ds.map(vectorize_text)
+val_ds = raw_val_ds.map(vectorize_text)
+test_ds = raw_test_ds.map(vectorize_text)
+
+AUTOTUNE = tf.data.AUTOTUNE
+
+# cache() - Caches the elements in this dataset. The first time the dataset is iterated over, its elements will be
+# cached either in the specified file or in memory. Subsequent iterations will use the cached data.
+#
+# prefetch() - Creates a `Dataset` that prefetches elements from this dataset. Most dataset input pipelines should
+# end with a call to `prefetch`. This allows later elements to be prepared while the current element is being
+# processed. This often improves latency and throughput, at the cost of using additional memory to store prefetched
+# elements.
+train_ds = train_ds.cache().prefetch(buffer_size=AUTOTUNE)
+val_ds = val_ds.cache().prefetch(buffer_size=AUTOTUNE)
+test_ds = test_ds.cache().prefetch(buffer_size=AUTOTUNE)
+
+embedding_dim = 16
+
+# Creates a `Sequential` model instance.
+model = tf.keras.Sequential([
+    # Embedding() - Turns positive integers (indexes) into dense vectors of fixed size. This layer can only be used
+    # on positive integer inputs of a fixed range. The `tf.keras.layers.TextVectorization`,
+    # `tf.keras.layers.StringLookup`, and `tf.keras.layers.IntegerLookup` preprocessing layers can help prepare
+    # inputs for an `Embedding` layer.
+    layers.Embedding(max_features, embedding_dim),
+    # Dropout() - The Dropout layer randomly sets input units to 0 with a frequency of `rate` at each step during
+    # training time, which helps prevent overfitting. Inputs not set to 0 are scaled up by 1/(1 - rate) such that the
+    # sum over all inputs is unchanged.
+    layers.Dropout(0.2),
+    layers.GlobalAveragePooling1D(),
+    layers.Dropout(0.2),
+    layers.Dense(1)])
+
+model.summary()
+
+model.compile(loss=losses.BinaryCrossentropy(from_logits=True),
+              optimizer='adam',
+              metrics=tf.metrics.BinaryAccuracy(threshold=0.0))
+
+epochs = 10
+history = model.fit(
+    train_ds,
+    validation_data=val_ds,
+    epochs=epochs)
+
+loss, accuracy = model.evaluate(test_ds)
+
+print("Loss: ", loss)
+print("Accuracy: ", accuracy)
+
+history_dict = history.history
+history_dict.keys()
+
+acc = history_dict['binary_accuracy']
+val_acc = history_dict['val_binary_accuracy']
+loss = history_dict['loss']
+val_loss = history_dict['val_loss']
+
+epochs = range(1, len(acc) + 1)
+
+# "bo" is for "blue dot"
+plt.plot(epochs, loss, 'bo', label='Training loss')
+# b is for "solid blue line"
+plt.plot(epochs, val_loss, 'b', label='Validation loss')
+plt.title('Training and validation loss')
+plt.xlabel('Epochs')
+plt.ylabel('Loss')
+plt.legend()
+
+plt.show()
