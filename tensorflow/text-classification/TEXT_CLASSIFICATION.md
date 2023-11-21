@@ -104,7 +104,31 @@
     * `.cache()` applies caching to the dataset. Caching stores a portion of the dataset in memory after the first epoch, which can speed up data loading during subsequent epochs.
     * `.prefetch(buffer_size=AUTOTUNE)` applies prefetching to the dataset. Prefetching allows the data pipeline to prefetch a specified number of batches of data ahead of the current batch during model training. The buffer_size parameter determines the number of batches to prefetch.
       * In this script, `AUTOTUNE` is used as the `buffer_size`, which means TensorFlow will automatically determine the optimal prefetching buffer size based on available system resources.
-10. 
+10. Create a sequential model with 5 layers
+   * ```python
+      embedding_dim = 16
+
+      model = tf.keras.Sequential([
+         layers.Embedding(max_features, embedding_dim),
+         layers.Dropout(0.2),
+         layers.GlobalAveragePooling1D(),
+         layers.Dropout(0.2),
+         layers.Dense(1)])
+     ```
+   * `tf.keras.Sequential` creates a Keras Sequential model, which is a linear stack of layers. The layers are defined within the square brackets `[]` as a list.
+     * The model will process the input data sequentially through the specified layers.
+   * `layers.Embedding(max_features, embedding_dim)` The first layer in the model is an embedding layer (`layers.Embedding`). It is responsible for converting integer-encoded words (word IDs) into dense vector representations (embeddings).
+     * `max_features` is the maximum number of words in the vocabulary, and `embedding_dim` is the dimensionality of the embeddings. In this case, it is set to 16, which means each word in the text will be represented as a 16-dimensional vector in the embedding layer.
+     * The embedding layer will be used to learn word representations specific to the task at hand.
+   * `layers.Dropout(0.2)` this dropout layer is added with a dropout rate of `0.2`. 
+     * Dropout is a regularization technique that helps prevent overfitting by randomly "dropping out" a fraction of the neurons during training, reducing the model's reliance on any single neuron.
+   * `layers.GlobalAveragePooling1D()` layer is added to compute the average of the embeddings across all word positions in each input sequence. 
+     * This reduces the sequence of embeddings to a fixed-length vector, which captures the overall sentiment of the input text.
+     * It helps in reducing the dimensionality of the data and summarizing the information from the entire sequence.
+   * `layers.Dropout(0.2)` Another dropout layer is added after the global average pooling layer with the same dropout rate of 0.2.
+   * `layers.Dense(1)` The final layer in the model is a dense layer with a single unit.
+     * This layer is responsible for making the binary classification prediction, where a value close to 1 indicates a positive sentiment, and a value close to 0 indicates a negative sentiment.
+11. 
 
 ## Links
 * https://www.tensorflow.org/tutorials/keras/text_classification
