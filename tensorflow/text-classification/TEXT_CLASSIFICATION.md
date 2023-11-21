@@ -74,11 +74,14 @@
          text = tf.expand_dims(text, -1)
          return vectorize_layer(text), label
      ```
-   * `layers.TextVectorization`, expects input data to be in the form of a batch of sequences. It assumes that you are providing multiple text sequences as input, and it processes them in a batched fashion.
    * Reshape the input text using `tf.expand_dims(text, -1)`, this function adds a new dimension to the `text` tensor along its last axis (axis -1). Essentially, it converts a 1D tensor (representing a single text sample) into a 2D tensor (representing a batch of one text sample).
+     * `layers.TextVectorization`, expects input data to be in the form of a batch of sequences. It assumes that you are providing multiple text sequences as input, and it processes them in a batched fashion.
      * Before: `text` is a 1D tensor with shape `(sequence_length,)`, where `sequence_length` is the length of the text.
      * After: `tf.expand_dims(text, -1)` converts it into a 2D tensor with shape `(sequence_length, 1)`. This 2D tensor now represents a batch of one sequence.
      * This is needed to adapt the shape of the input `text` tensor to match the batching expectations of `vectorize_layer`, even when you are processing a single text sample. It ensures consistency and compatibility in how the text is processed by the vectorization layer.
+   * `vectorize_layer(text)` is invoking the `call` method of the `TextVectorization` layer.
+     * When you call an instance of a layer (ex. `vectorize_layer`) with an input tensor (ex `text`), it implicitly calls the `call` method of that layer to process the input and produce the output.
+     * The `call` method of the `TextVectorization` layer performs the vectorization process, which includes tokenization, mapping words to integers based on its vocabulary, and padding/truncating sequences to the specified length. It essentially applies the layer's transformations to the input data.
 8. 
 
 ## Links
