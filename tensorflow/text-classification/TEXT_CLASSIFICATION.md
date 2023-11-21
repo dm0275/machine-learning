@@ -82,7 +82,17 @@
    * `vectorize_layer(text)` is invoking the `call` method of the `TextVectorization` layer.
      * When you call an instance of a layer (ex. `vectorize_layer`) with an input tensor (ex `text`), it implicitly calls the `call` method of that layer to process the input and produce the output.
      * The `call` method of the `TextVectorization` layer performs the vectorization process, which includes tokenization, mapping words to integers based on its vocabulary, and padding/truncating sequences to the specified length. It essentially applies the layer's transformations to the input data.
-8. 
+8. Apply the `vectorize_text` function to the raw datasets to pre-process and vectorize the data
+    * ```python
+      train_ds = raw_train_ds.map(vectorize_text)
+      val_ds = raw_val_ds.map(vectorize_text)
+      test_ds = raw_test_ds.map(vectorize_text)
+      ```
+    * `raw_<data_type>_ds`(ex. `raw_train_ds`) is the raw dataset that contains pairs of text samples and their corresponding labels.
+    * `raw_train_ds.map(vectorize_text)` applies the `vectorize_text` function to each element (text sample and label pair) in the training dataset.
+    * The result is that the text samples in the training dataset are processed and transformed into integer sequences using the preconfigured `vectorize_layer`. The labels remain unchanged.
+    * The processed data is stored in the `train_ds` dataset, which is now ready for training.
+9. 
 
 ## Links
 * https://www.tensorflow.org/tutorials/keras/text_classification
