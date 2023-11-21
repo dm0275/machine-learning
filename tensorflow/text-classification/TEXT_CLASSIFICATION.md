@@ -92,7 +92,19 @@
     * `raw_train_ds.map(vectorize_text)` applies the `vectorize_text` function to each element (text sample and label pair) in the training dataset.
     * The result is that the text samples in the training dataset are processed and transformed into integer sequences using the preconfigured `vectorize_layer`. The labels remain unchanged.
     * The processed data is stored in the `train_ds` dataset, which is now ready for training.
-9. 
+9. Optimize the data for training
+    * ```python
+      AUTOTUNE = tf.data.AUTOTUNE
+
+      train_ds = train_ds.cache().prefetch(buffer_size=AUTOTUNE)
+      val_ds = val_ds.cache().prefetch(buffer_size=AUTOTUNE)
+      test_ds = test_ds.cache().prefetch(buffer_size=AUTOTUNE)
+      ```
+    * Setting `AUTOTUNE` allows TensorFlow to automatically adjust the degree of parallelism during data loading and preprocessing operations. This helps TensorFlow to use available CPU and memory resources efficiently.
+    * `.cache()` applies caching to the dataset. Caching stores a portion of the dataset in memory after the first epoch, which can speed up data loading during subsequent epochs.
+    * `.prefetch(buffer_size=AUTOTUNE)` applies prefetching to the dataset. Prefetching allows the data pipeline to prefetch a specified number of batches of data ahead of the current batch during model training. The buffer_size parameter determines the number of batches to prefetch.
+      * In this script, `AUTOTUNE` is used as the `buffer_size`, which means TensorFlow will automatically determine the optimal prefetching buffer size based on available system resources.
+10. 
 
 ## Links
 * https://www.tensorflow.org/tutorials/keras/text_classification
