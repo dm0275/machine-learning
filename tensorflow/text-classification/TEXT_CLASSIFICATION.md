@@ -68,7 +68,18 @@
    * `vectorize_layer` is an instance of `layers.TextVectorization` (created in step 4), it is used to convert text data into sequences of integers.
    * `adapt` is a method of `TextVectorization` that is used to adapt the vectorization layer to the training data. It computes vocabulary statistics and tokenizes the text data based on the training dataset it receives.
    * It is essentially telling the vectorization layer to analyze the text in `train_text` and build its vocabulary and tokenization rules based on this training data.
-7. 
+7. Define a function to pre-process a single text sample
+   * ```python
+      def vectorize_text(text, label):
+         text = tf.expand_dims(text, -1)
+         return vectorize_layer(text), label
+     ```
+   * `layers.TextVectorization`, expects input data to be in the form of a batch of sequences. It assumes that you are providing multiple text sequences as input, and it processes them in a batched fashion.
+   * Reshape the input text using `tf.expand_dims(text, -1)`, this function adds a new dimension to the `text` tensor along its last axis (axis -1). Essentially, it converts a 1D tensor (representing a single text sample) into a 2D tensor (representing a batch of one text sample).
+     * Before: `text` is a 1D tensor with shape `(sequence_length,)`, where `sequence_length` is the length of the text.
+     * After: `tf.expand_dims(text, -1)` converts it into a 2D tensor with shape `(sequence_length, 1)`. This 2D tensor now represents a batch of one sequence.
+     * This is needed to adapt the shape of the input `text` tensor to match the batching expectations of `vectorize_layer`, even when you are processing a single text sample. It ensures consistency and compatibility in how the text is processed by the vectorization layer.
+8. 
 
 ## Links
 * https://www.tensorflow.org/tutorials/keras/text_classification
