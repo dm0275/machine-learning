@@ -42,7 +42,7 @@ def simple_linear_regression_fit(input_x, output_y, learning_rate, epochs):
     return weight, bias
 
 
-# Test data
+# Test data - f(x) = 3x +1
 train_input = np.array([-1.0, 0.0, 1.0, 2.0, 3.0, 4.0], dtype=float)
 train_output = np.array([-2.0, 1.0, 4.0, 7.0, 10.0, 13.0], dtype=float)
 
