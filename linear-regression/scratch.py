@@ -50,7 +50,7 @@ train_output = np.array([-2.0, 1.0, 4.0, 7.0, 10.0, 13.0], dtype=float)
 validate_input = np.array([17.0, 18.0, 19.0, 20.0], dtype=float)
 validate_output = np.array([52.0, 55.0, 58.0, 61.0], dtype=float)
 
-epochs = 50
+epochs = 500
 learning_rate = 0.01
 
 weight, bias = simple_linear_regression_fit(train_input, train_output, learning_rate, epochs)
@@ -66,10 +66,10 @@ validation_loss = np.mean((validate_predicted_output - validate_output) ** 2)
 
 print("Validation Loss:", validation_loss)
 
-# New input data for prediction
-new_input_x = np.array([5.0, 6.0])
+# Data for prediction
+predict_input = np.array([5.0, 6.0], dtype=float).reshape(-1, 1)
 
-# Predict output for new input data using the trained model
-predicted_output_y = weight * new_input_x + bias
+# Predict output for the new input data using the trained model
+predicted_output_y = weight * predict_input + bias
 
 print("Predicted outputs for new input data:", predicted_output_y)
