@@ -5,12 +5,16 @@ import numpy as np
 
 def simple_linear_regression_fit(input_x, output_y, learning_rate, epochs):
     # Initialize parameters (weights and bias)
-    np.random.seed(0)  # for reproducibility
-    weight = np.random.randn()
-    bias = np.random.randn()
+    np.random.seed(0)
 
-    print(weight)
-    print(bias)
+    # The weight and bias parameters define the relationship between the input features and the output in a linear
+    # regression model.
+    # The weight represents the effect of each input feature on the output
+    # weight = np.random.randn()
+    weight = 1
+    # The bias represents the baseline value of the output when all input features are zero
+    # bias = np.random.randn()
+    bias = 1
 
     # Number of samples
     n = len(input_x)
@@ -28,11 +32,10 @@ def simple_linear_regression_fit(input_x, output_y, learning_rate, epochs):
         d_bias = (2 / n) * np.sum(predicted_output_y - output_y)
 
         # Update parameters
-        weight -= learning_rate * d_weight
-        bias -= learning_rate * d_bias
+        weight = weight - (learning_rate * d_weight)
+        bias = bias - (learning_rate * d_bias)
 
-        if epoch % 10 == 0:
-            print(f'Epoch {epoch + 1}/{epochs}, Loss: {loss:.4f}')
+        print(f'Epoch {epoch + 1}/{epochs}, Loss: {loss:.4f}')
 
     print("Training finished!")
 
