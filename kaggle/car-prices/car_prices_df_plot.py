@@ -6,6 +6,7 @@ import pandas as pd
 
 # Import the data set
 data_frame = pd.read_csv("car_prices.csv")
+data_frame = data_frame.dropna()
 
 # Plot using the `DataFrame.plot`
 data_frame.plot(kind='scatter', x='year', y='sellingprice', title="Car Price by Year", xlabel="Year",
